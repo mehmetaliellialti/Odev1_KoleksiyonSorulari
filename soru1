@@ -1,0 +1,78 @@
+using System;
+using System.Collections;
+
+namespace Koleksiyonlar_Soru_1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ArrayList asal = new ArrayList();
+            ArrayList asalOlmayan = new ArrayList();
+
+            int sayac = 0;
+            while (sayac < 20)
+            {
+                Console.Write($"{sayac + 1}. sayıyı giriniz: ");
+                string input = Console.ReadLine();
+
+                int sayi;
+                if (!int.TryParse(input, out sayi) || sayi <= 0)
+                {
+                    Console.WriteLine("Hatalı giriş! Lütfen pozitif bir sayı giriniz.");
+                    continue;
+                }
+
+                if (AsalMi(sayi))
+                    asal.Add(sayi);
+                else
+                    asalOlmayan.Add(sayi);
+
+                sayac++;
+            }
+
+            asal.Sort();
+            asal.Reverse();
+            asalOlmayan.Sort();
+            asalOlmayan.Reverse();
+
+            Console.WriteLine("\n--- ASAL SAYILAR ---");
+            Yazdir(asal);
+
+            Console.WriteLine("\n--- ASAL OLMAYAN SAYILAR ---");
+            Yazdir(asalOlmayan);
+
+            Console.ReadKey();
+        }
+
+        static bool AsalMi(int sayi)
+        {
+            if (sayi < 2) return false;
+
+            for (int i = 2; i <= Math.Sqrt(sayi); i++)
+            {
+                if (sayi % i == 0)
+                    return false;
+            }
+            return true;
+        }
+
+        static void Yazdir(ArrayList liste)
+        {
+            int toplam = 0;
+
+            foreach (int item in liste)
+            {
+                Console.Write(item + " ");
+                toplam += item;
+            }
+
+            Console.WriteLine($"\nEleman Sayısı: {liste.Count}");
+
+            if (liste.Count > 0)
+                Console.WriteLine("Ortalama: " + (double)toplam / liste.Count);
+            else
+                Console.WriteLine("Ortalama: 0");
+        }
+    }
+}
